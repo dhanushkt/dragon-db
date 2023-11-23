@@ -1,0 +1,31 @@
+/* Dragon UI v2.2.3 */
+@import url("https://cdn.jsdelivr.net/npm/jellyskin@latest/dist/main.css");
+@import url("https://cdn.jsdelivr.net/npm/jellyskin@latest/dist/addons/improvePerformance.css");
+@import url("https://cdn.jsdelivr.net/npm/jellyskin@latest/dist/addons/gradients/mauve.css");
+@import url("https://cdn.jsdelivr.net/npm/jellyskin@latest/dist/logo.css");
+
+/* DragonDB logo */
+.pageTitleWithDefaultLogo {
+  background-image: url(https://blog.infinitysystems.in/dragondbserver/DragonDB_SLogoWhitev2.png) !important;
+}
+
+/* DragonDB BG */
+.homeSectionsContainer {
+  background-image: url(https://blog.infinitysystems.in/dragondbserver/DragonDB_BGTrans.png) !important;
+  background-position: center top !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Login BG */
+#loginPage:after {
+  background: url(https://blog.infinitysystems.in/dragondbserver/DragonDB_BGTrans.png) !important;
+  background-position: center center !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+
+/* UIv2 JellySkin - padding to media play button - mobile */
+span.material-icons.detailButton-icon.play_arrow {
+    padding: 0.2em;
+}
