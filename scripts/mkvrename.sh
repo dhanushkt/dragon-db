@@ -28,6 +28,7 @@ do
     read media_name
     
     # Search for files with case-insensitive partial name match
+	# TODO: search only .mkv file and sort the output when adding to array
     readarray -t found_files < <(find "$media_path" -iname "*$media_name*" -type f)
     
     echo -e "\n"
@@ -77,6 +78,7 @@ do
                     echo "******************************************* | track_number: $track_number"
                     echo "-------------------------------------------------------------------------------------------------------------------"
                     
+					# TODO: remove unwanted things from line such as "| + Name:"
                     current_name=$(mkvinfo "$filename" | grep -A 10 "Track number: $track_number" | grep "Name" | sed 's/^[[:space:]]*Name:[[:space:]]*//')
                     
                     echo "-------------------------------------------- | current_name | -----------------------------------------------------"
@@ -91,6 +93,7 @@ do
                         echo "$new_name"
                         echo "-------------------------------------------------------------------------------------------------------------------"
                         
+						# TODO: Add an option to select to use set or delete name based on new_name also to override new name
                         #mkvpropedit "$filename" --edit track:$track_number --set name="$new_name"
                         #mkvpropedit "$filename" --edit track:$track_number --delete name
                         
