@@ -28,8 +28,8 @@ do
     read media_name
     
     # Search for files with case-insensitive partial name match
-	# TODO: search only .mkv file and sort the output when adding to array
-    readarray -t found_files < <(find "$media_path" -iname "*$media_name*" -type f)
+	# TODO: search only .mkv file and sort the output when adding to array - DONE
+    readarray -t found_files < <(find "$media_path" -iname "*$media_name*.mkv" -type f | sort)
     
     echo -e "\n"
     echo "-------------------------------------------------------------------------------------------------------------------"
