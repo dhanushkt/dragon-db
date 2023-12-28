@@ -78,8 +78,8 @@ do
                     echo "******************************************* | track_number: $track_number"
                     echo "-------------------------------------------------------------------------------------------------------------------"
                     
-					# TODO: remove unwanted things from line such as "| + Name:"
-                    current_name=$(mkvinfo "$filename" | grep -A 10 "Track number: $track_number" | grep "Name" | sed 's/^[[:space:]]*Name:[[:space:]]*//')
+					# TODO: remove unwanted things from line such as "| + Name:" - DONE
+                    current_name=$(mkvinfo "$filename" | grep -A 10 "Track number: $track_number" | grep "Name" | sed 's/^[[:space:]]*Name:[[:space:]]*//;s/^[^:]*: //')
                     
                     echo "-------------------------------------------- | current_name | -----------------------------------------------------"
                     echo "$current_name"
