@@ -79,9 +79,6 @@ mkv_rename_func() {
     return
 }
 
-# function to view only the name changes
-
-
 # Present options for media types
 PS3="-------------------------------------> Select media type: "
 options=("Movies" "TV" "Anime")
@@ -138,37 +135,44 @@ do
                     echo "-------------------------------------------------------------------------------------------------------------------"
                     echo "--------------------------------------------- | MKV Menu | --------------------------------------------------------"
                     echo "-------------------------------------------------------------------------------------------------------------------"
-                    echo "1. Get MKV Info"
-                    echo "2. View Name"
-                    echo "3. Delete Name"
-                    echo "4. Replace Name (BETA)"
-                    echo "5. Exit"
+                    echo "1. Get Media Info"
+                    echo "2. Get MKV Info"
+                    echo "3. View Name"
+                    echo "4. Delete Name"
+                    echo "5. Replace Name (BETA)"
+                    echo "6. Exit"
                     echo "-------------------------------------------------------------------------------------------------------------------"
                     
                     # Prompt user for input
-                    read -p "Enter your choice (1-5): " choice
+                    read -p "Enter your choice (1-6): " choice
                     
                     # Check user's choice
                     case $choice in
                         1)
+                            echo "========================================= | Media Info START | ===================================================="
+                            mediainfo "$filename"
+                            echo "========================================== | Media Info END | ====================================================="
+                            echo -e "\n"
+                        ;;
+                        2)
                             echo "========================================== | MKV Info START | ====================================================="
                             mkvinfo "$filename"
                             echo "=========================================== | MKV Info END | ======================================================"
                             echo -e "\n"
                         ;;
-                        2)
+                        3)
                             echo "View MKV name changes"
                             mkv_rename_func 1
                         ;;
-                        3)
+                        4)
                             echo "Delete entire Name field"
                             mkv_rename_func 2
                         ;;
-                        4)
+                        5)
                             echo "Replace Name to new value"
                             mkv_rename_func 3
                         ;;
-                        5)
+                        6)
                             echo "=========================================== | Script Exit | ======================================================="
                             exit 0
                         ;;
@@ -177,8 +181,6 @@ do
                         ;;
                     esac
                 done
-                
-                
                 
                 echo "-------------------------------------------------------------------------------------------------------------------"
                 echo "------------------------------------------- | MKV Edit End | ------------------------------------------------------"
