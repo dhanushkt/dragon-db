@@ -2,7 +2,7 @@
 #Script to efficiently remove unwanted names from MKV track metadata
 #Author: Dragon DB
 
-# function to view only the name changes
+# Function to view/delete/replace track names
 mkv_rename_func() {
     # Get function arguments
     # 1: View Name 2: Delete Name 3: Replace Name
@@ -79,6 +79,36 @@ mkv_rename_func() {
     return
 }
 
+# Function to set default tack
+mkv_default_func() {
+    echo "-------------------------------------------------------------------------------------------------------------------"
+    echo "---------------------------------------- | MKV Default Function | -------------------------------------------------"
+    echo "-------------------------------------------------------------------------------------------------------------------"
+    echo -e "\n"
+    
+    echo "Enter track number to mark default: "
+    read track_number_default
+    
+    echo -e "\n"
+    echo "################################################ | File Name | ####################################################"
+    echo "$filename"
+    echo "############################################### | Track Number | ##################################################"
+    echo "$track_number_default"
+    echo "###################################################################################################################"
+    echo -e "\n"
+
+    echo "-------------------------------------------------------------------------------------------------------------------"
+    # Print 1 line before and 8 lines of the track seelcted
+    mkvinfo "$filename" | grep -B 1 -A 8 "Track number: $track_number_default"
+    echo "-------------------------------------------------------------------------------------------------------------------"
+    echo -e "\n"
+
+    echo -e "\e[1;31mExecuting --set flag-default Process on Track: $track_number_default\e[0m"
+    # mkvpropedit "$filename" --edit track:$track_number_default --set flag-default=1
+
+    return
+}
+
 # Present options for media types
 PS3="-------------------------------------> Select media type: "
 options=("Movies" "TV" "Anime")
@@ -140,11 +170,12 @@ do
                     echo "3. View Name"
                     echo "4. Delete Name"
                     echo "5. Replace Name (BETA)"
-                    echo "6. Exit"
+                    echo "6. Set Default"
+                    echo "7. Exit"
                     echo "-------------------------------------------------------------------------------------------------------------------"
                     
                     # Prompt user for input
-                    read -p "Enter your choice (1-6): " choice
+                    read -p "Enter your choice (1-7): " choice
                     
                     # Check user's choice
                     case $choice in
@@ -173,6 +204,10 @@ do
                             mkv_rename_func 3
                         ;;
                         6)
+                            echo "Select & Set Default track"
+                            mkv_default_func
+                        ;;
+                        7)
                             echo "=========================================== | Script Exit | ======================================================="
                             exit 0
                         ;;
