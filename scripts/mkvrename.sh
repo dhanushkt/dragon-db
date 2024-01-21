@@ -119,7 +119,7 @@ do
             media_path="/home/trinityvoid/media/Movies"
         ;;
         "TV")
-            media_path="/home/trinityvoid/media/'TV Shows'"
+            media_path="/home/trinityvoid/media/TV Shows"
         ;;
         "Anime")
             media_path="/home/trinityvoid/media/Anime"
