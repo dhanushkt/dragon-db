@@ -10,7 +10,8 @@
 
 ## About <a name = "about"></a>
 
-Scripts for automating process of analysing & changing MKV files, Radarr & Sonarr applications
+Scripts for automating the process of analysing & changing MKV files 
+Useful for Radarr & Sonarr applications
 
 ## Getting Started <a name = "getting_started"></a>
 
