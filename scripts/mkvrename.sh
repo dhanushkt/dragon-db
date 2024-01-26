@@ -182,7 +182,7 @@ do
                             echo "-------------------------------------------------------------------------------------------------------------------"
                             echo "1. Get Media Info"
                             echo "2. Get MKV Info"
-                            echo "3. View Name"
+                            echo "3. Test Name Changes"
                             echo "4. Delete Name"
                             echo "5. Replace Name (BETA)"
                             echo "6. Set Default"
@@ -207,7 +207,7 @@ do
                                     echo -e "\n"
                                 ;;
                                 3)
-                                    echo "View MKV name changes"
+                                    echo "Test MKV track name changes"
                                     mkv_rename_func 1 "$filename"
                                 ;;
                                 4)
@@ -303,7 +303,7 @@ do
                 echo "-------------------------------------------------------------------------------------------------------------------"
                 echo "1. Get Media Info"
                 echo "2. Get MKV Info"
-                echo "3. View Name"
+                echo "3. Test Name Changes"
                 echo "4. Delete Name"
                 echo "5. Replace Name (BETA)"
                 echo "6. Exit"
@@ -338,7 +338,7 @@ do
                         done
                     ;;
                     3)
-                        echo "View MKV name changes"
+                        echo "Test MKV track name changes"
                         for ((i=0; i<${#allMKV_files[@]}; i++)); do
                             mkv_rename_func 1 "${allMKV_files[$i]}"
                         done
