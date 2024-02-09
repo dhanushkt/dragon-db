@@ -1,6 +1,11 @@
 #!/bin/bash
-#Script to efficiently remove unwanted names from MKV track metadata
-#Author: Dragon DB
+# Script to efficiently remove unwanted names from MKV track metadata
+# Author: Dragon DB
+
+# Global Log Variables
+log_current_date=$(date +"%d-%m-%Y")
+log_output_file="mkvrename_log_${log_current_date}.txt"
+echo "Log file name : $log_output_file"
 
 # Function to view/delete/replace track names
 mkv_rename_func() {
@@ -14,6 +19,20 @@ mkv_rename_func() {
     echo "-------------------------------------------------------------------------------------------------------------------"
     echo -e "\n"
     
+    # Backup file details - test
+    echo "" >> "$log_output_file"
+    echo "| File Name | ===================================================" >> "$log_output_file"
+    echo "$filename" >> "$log_output_file"
+    echo "=================================================================" >> "$log_output_file"
+    echo "" >> "$log_output_file"
+    echo "| Media Info START | ============================================" >> "$log_output_file"
+    mediainfo "$filename" >> "$log_output_file"
+    echo "| Media Info END | ==============================================" >> "$log_output_file"
+    echo "" >> "$log_output_file"
+    echo "| MKV Info START | ==============================================" >> "$log_output_file"
+    mkvinfo "$filename" >> "$log_output_file"
+    echo "| MKV Info END | ================================================" >> "$log_output_file"
+
     #echo "Enter the word to be removed: "
     #read word_to_remove
     
