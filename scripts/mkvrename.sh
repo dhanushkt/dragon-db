@@ -10,7 +10,7 @@ echo "Log file name : $log_output_file"
 # Function to view/delete/replace track names
 mkv_rename_func() {
     # Get function arguments
-    # 1: View Name 2: Delete Name 3: Replace Name
+    # 1: View Name 2: Delete Name 3: Replace Names
     local argument_1=$1
     local filename=$2
     
