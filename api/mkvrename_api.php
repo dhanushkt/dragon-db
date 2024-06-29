@@ -4,7 +4,7 @@ MKVRN API
 This PHP API code is designed to remotely execute the mkvrename script on a webhook call using the ssh2 extension on a remote server where the media is located. The script file (.sh) to be executed should be placed on the VM.
 Triggered by Radarr/Sonarr WebHook Connection for "Import" and "Upgrade" events.
 API by: Dragon DB
-Version: 2.2
+Version: 2.3
 */
 
 // API Flags
@@ -17,7 +17,7 @@ $log_dir = "mkvrename_api_logs";
 if (!is_dir($log_dir)) {
     mkdir($log_dir, 0777, true);
 }
-$log_current_date = date('d-m-Y_H-i-s');
+$log_current_date = date('d_m_Y_H_i_s');
 $log_filename = $log_dir . "/ERROR_{$log_current_date}_mkvrn_api_log.txt";
 $log_file = fopen($log_filename, 'a');
 
@@ -62,7 +62,7 @@ function executeRemoteScript($host, $port, $username, $password, $scriptPath, $p
     fclose($stream);
 
     // Return the output
-    return "> Sending command > \n" . $command . "\n" . "> Output from Remote Script > \n" . $output;
+    return "> Sending command with params - \n" . $command . "\n" . "> Output from remote script - \n" . $output;
 }
 
 // Function to check if path containes "Anime"
@@ -109,9 +109,9 @@ function extractAndSanitizeSeriesInfo($input)
 }
 
 fwrite($log_file, "====================================================== \n");
-fwrite($log_file, "> Triggered MKV Rename API on " . date('d-m-Y h:i:s A') . "\n");
+fwrite($log_file, "> Triggered MKV Rename API at " . date('d_m_Y_H_i_s') . " [" . date('h:i:s A') . "]" . "\n");
 fwrite($log_file, "====================================================== \n");
-fwrite($log_file, "> TEMP log file name: " . $log_filename . "\n");
+fwrite($log_file, "> TEMP log file: ERROR_{$log_current_date}_mkvrn_api_log.txt \n");
 
 // Get the header "User Agent" from $_SERVER
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
@@ -190,7 +190,7 @@ if (rename($log_filename, $new_log_filename)) {
     $log_file = fopen($new_log_filename, 'a');
 
     if ($log_file) {
-        fwrite($log_file, "> Log file renamed successfully to: " . $new_log_filename . "\n");
+        fwrite($log_file, "> Log file renamed successfully to: {$media_title}_{$log_current_date}_mkvrn_api_log.txt \n");
     } else {
         echo "> Error: Unable to open the renamed log file.";
     }
@@ -234,7 +234,7 @@ fwrite($log_file, "> Final Full Path: " . $final_path . "\n");
 include_once ('mkvrename_creds.php');
 $ssh_output = executeRemoteScript($creds_host, $creds_port, $creds_username, $creds_password, $creds_scriptPath, [$final_path, $media_title]);
 fwrite($log_file, "______________________________________________________ \n");
-fwrite($log_file, "> SSH Function Output \n" . $ssh_output . "\n");
+fwrite($log_file, "> SSH Function \n" . $ssh_output);
 fwrite($log_file, "______________________________________________________ \n");
 fwrite($log_file, "> End of MKV Rename API \n");
 fwrite($log_file, "====================================================== \n");
