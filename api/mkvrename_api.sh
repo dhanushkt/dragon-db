@@ -62,7 +62,7 @@ mkv_rename_func() {
                 # ntfy notification on matched names
                 # Extract the filename using basename
                 base_mkvfilename=$(basename "$filename")
-                curl -d "MKVRN API: Found $word_to_remove in $base_mkvfilename" "ntfy.sh/dragondb_ntfy"
+                curl -H "Tags: rotating_light,MKVRN-API" -d "[MKVRN-API] Found $word_to_remove in $base_mkvfilename" "ntfy.sh/dragondb_ntfy"
                 
                 declare -g mkv_log=false
             fi
