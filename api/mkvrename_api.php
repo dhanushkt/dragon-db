@@ -4,7 +4,7 @@ MKVRN API
 This PHP API code is designed to remotely execute the mkvrename script on a webhook call using the ssh2 extension on a remote server where the media is located. The script file (.sh) to be executed should be placed on the VM.
 Triggered by Radarr/Sonarr WebHook Connection for "Import" and "Upgrade" events.
 API by: Dragon DB
-Version: 1.1
+Version: 2.1
 */
 
 // API Flags
@@ -75,9 +75,10 @@ function containsAnime($path)
 // Function to sanitize string by removing special characters and replacing spaces with underscores
 function sanitizeString($string)
 {
+    // Convert the string to lowercase
+    $string = strtolower($string);
     // Remove special characters except spaces, letters, and numbers
-    $string = preg_replace('/[^A-Za-z0-9 ]/', '', $string);
-
+    $string = preg_replace('/[^a-z0-9 ]/', '', $string);
     // Replace spaces with underscores
     $string = str_replace(' ', '_', $string);
 
