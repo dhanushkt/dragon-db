@@ -1,8 +1,10 @@
 <?php
 /* 
-This PHP API code is designed to automatically execute scripts using the ssh2 extension on a remote server where the media is located, to perform mkvrename operations. Script file to be executed (.sh) should be placed on VM.
-Triggered by Radarr/Sonarr WebHook Connection for "Import" or "Upgrade" events.
-API by: Dragon DB 
+MKVRN API
+This PHP API code is designed to remotely execute the mkvrename script on a webhook call using the ssh2 extension on a remote server where the media is located. The script file (.sh) to be executed should be placed on the VM.
+Triggered by Radarr/Sonarr WebHook Connection for "Import" and "Upgrade" events.
+API by: Dragon DB
+Version: 1.1
 */
 
 // API Flags
