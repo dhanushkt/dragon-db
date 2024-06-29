@@ -3,6 +3,7 @@
 # PHP API is implamented to trigger this script remotely | MKVRN
 # Requirements: mkvinfo, mkvpropedit
 # Author: Dragon DB
+# Version: 1.1
 
 # Global Log Variables
 mkvlog_current_datetime=$(date +"%d-%m-%Y_%H-%M-%S")
