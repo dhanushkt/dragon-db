@@ -4,7 +4,7 @@ MKVRN API
 This PHP API code is designed to remotely execute the mkvrename script on a webhook call using the ssh2 extension on a remote server where the media is located. The script file (.sh) to be executed should be placed on the VM.
 Triggered by Radarr/Sonarr WebHook Connection for "Import" and "Upgrade" events.
 API by: Dragon DB
-Version: 2.1
+Version: 2.2
 */
 
 // API Flags
@@ -62,7 +62,7 @@ function executeRemoteScript($host, $port, $username, $password, $scriptPath, $p
     fclose($stream);
 
     // Return the output
-    return "> Sending command: \n" . $command . "\n" . "> Output from Remote Script: \n" . $output;
+    return "> Sending command > \n" . $command . "\n" . "> Output from Remote Script > \n" . $output;
 }
 
 // Function to check if path containes "Anime"
@@ -111,7 +111,7 @@ function extractAndSanitizeSeriesInfo($input)
 fwrite($log_file, "====================================================== \n");
 fwrite($log_file, "> Triggered MKV Rename API on " . date('d-m-Y h:i:s A') . "\n");
 fwrite($log_file, "====================================================== \n");
-
+fwrite($log_file, "> TEMP log file name: " . $log_filename . "\n");
 
 // Get the header "User Agent" from $_SERVER
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
@@ -156,7 +156,7 @@ if (isset($api_body_json['movie']) && isset($api_body_json['movieFile'])) {
     $media_title = sanitizeString($api_body_json['movie']['title']);
 
     // log
-    fwrite($log_file, "> Radarr Folder Path: " . $folderPath . "\n");
+    fwrite($log_file, "\n> Radarr Folder Path: " . $folderPath . "\n");
     fwrite($log_file, "> Radarr Clean Folder Path: " . $clean_folderPath . "\n");
     fwrite($log_file, "> Radarr Relative Path: " . $relativePath . "\n");
     fwrite($log_file, "> Radarr Clean Relative Path: " . $clean_relativePath . "\n");
@@ -172,7 +172,7 @@ elseif (isset($api_body_json['series']) && isset($api_body_json['episodeFile']))
     $media_title = extractAndSanitizeSeriesInfo($clean_relativePath);
 
     // log
-    fwrite($log_file, "> Sonarr Folder Path: " . $folderPath . "\n");
+    fwrite($log_file, "\n> Sonarr Folder Path: " . $folderPath . "\n");
     fwrite($log_file, "> Sonarr Clean Folder Path: " . $clean_folderPath . "\n");
     fwrite($log_file, "> Sonarr elative Path: " . $relativePath . "\n");
     fwrite($log_file, "> Sonarr Clean Relative Path: " . $clean_relativePath . "\n");
@@ -233,7 +233,9 @@ fwrite($log_file, "> Final Full Path: " . $final_path . "\n");
 // Send an SSH command to the remote server
 include_once ('mkvrename_creds.php');
 $ssh_output = executeRemoteScript($creds_host, $creds_port, $creds_username, $creds_password, $creds_scriptPath, [$final_path, $media_title]);
-fwrite($log_file, "> SSH Function Output: \n" . $ssh_output . "\n");
+fwrite($log_file, "______________________________________________________ \n");
+fwrite($log_file, "> SSH Function Output \n" . $ssh_output . "\n");
+fwrite($log_file, "______________________________________________________ \n");
 fwrite($log_file, "> End of MKV Rename API \n");
 fwrite($log_file, "====================================================== \n");
 fclose($log_file);

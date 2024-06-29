@@ -4,7 +4,7 @@
 # PHP API is implemented to trigger this script remotely on Radarr/Sonarr import and upgrade
 # Requirements: mkvinfo, mkvpropedit
 # Author: Dragon DB
-# Version: 1.1
+# Version: 2.2
 
 # Check if script is called with exactly two argument, $1 = path to .mkv file, $2 = media_title
 if [ "$#" -ne 2 ]; then
@@ -22,11 +22,12 @@ mkvlog_output_file="/home/trinityvoid/scripts/mkvrename_api_logs/${media_title}_
 # Log flag to log mkvinfo & mediainfo only once if there is track metadata changes
 mkv_log=true
 
+echo "> Triggered MKVRename API Script"
 # Logging the received full file path
 echo "> Received full file path: $full_file_path "
 echo "#################################################################" >> "$mkvlog_output_file"
-echo "> Received full file path: $full_file_path" >> "$mkvlog_output_file"
-echo "" >> "$mkvlog_output_file"
+echo "> Received full file path:" >> "$mkvlog_output_file"
+echo "$full_file_path" >> "$mkvlog_output_file"
 
 # Check if the provided file is a .mkv file & it exists
 if [[ "$full_file_path" != *.mkv ]] || [ ! -f "$full_file_path" ]; then
@@ -43,19 +44,17 @@ TMP_FILE="./TEMP_words_to_remove.txt"
 curl -s -o "$TMP_FILE" "$WORDS_URL"
 # Read the TEMP file into an array
 IFS=$'\r\n' GLOBIGNORE='*' command eval 'words_to_remove_arr=($(cat $TMP_FILE))'
-# Logging the list of words to remove
-echo "> List of words to remove: ${words_to_remove_arr[*]}"
-echo "> List of words to remove: ${words_to_remove_arr[*]}" >> "$mkvlog_output_file"
-echo "" >> "$mkvlog_output_file"
+# Logging the list of words to remove (Print each element with single quotes using printf)
+printf "> List of words to remove: %s" "$(printf "'%s' " "${words_to_remove_arr[*]}")"
+echo "> List of words to remove:" >> "$mkvlog_output_file"
+printf "$(printf "'%s' " "${words_to_remove_arr[@]}")\n" >> "$mkvlog_output_file"
 
 
 # MKV Rename Function START
 # Function to delete the name metadata if it contains the any words in list array "words_to_remove" from the .mkv file
 echo "=================================================================" >> "$mkvlog_output_file"
 echo "> START MKV Rename Function | -----------------------------------" >> "$mkvlog_output_file"
-echo "" >> "$mkvlog_output_file"
-echo "> Full File Path:" >> "$mkvlog_output_file"
-echo "$full_file_path" >> "$mkvlog_output_file"
+echo "> Looping through all tracks" >> "$mkvlog_output_file"
 
 # Loop through tracks and delete the name field if it matches the "word"
 mkvinfo "$full_file_path" | grep "Track number" | while read -r line; do
@@ -66,10 +65,10 @@ mkvinfo "$full_file_path" | grep "Track number" | while read -r line; do
     # Get the current name of the track
     current_name=$(mkvinfo "$full_file_path" | grep -A 10 "Track number: $track_number" | grep "Name" | sed 's/^[[:space:]]*Name:[[:space:]]*//;s/^[^:]*: //')
     echo "> current name: " >> "$mkvlog_output_file"
-    echo "$current_name" >> "$mkvlog_output_file"
+    echo "${current_name:-[empty]}" >> "$mkvlog_output_file"
     
     for word in "${words_to_remove_arr[@]}"; do
-        echo "> selected to remove: $word" >> "$mkvlog_output_file"
+        echo "> selected word to remove: $word" >> "$mkvlog_output_file"
         
         # TODO - Regex implimentation for searching the word to remove in one go
         if [[ "$current_name" == *"$word"* ]]; then
@@ -105,18 +104,18 @@ mkvinfo "$full_file_path" | grep "Track number" | while read -r line; do
             
             echo "> Word '$word' removed from Track $track_number name metadata."
             echo "> Word '$word' removed from Track $track_number name metadata." >> "$mkvlog_output_file"
-            echo "_________________________________________________________________" >> "$mkvlog_output_file"
+            #echo "_________________________________________________________________" >> "$mkvlog_output_file"
         else
             echo "> Word '$word' not found in Track $track_number name metadata."
             echo "> Word '$word' not found in Track $track_number name metadata. Skipping." >> "$mkvlog_output_file"
-            echo "_________________________________________________________________" >> "$mkvlog_output_file"
+            #echo "_________________________________________________________________" >> "$mkvlog_output_file"
         fi
-        
     done
+    echo "_________________________________________________________________" >> "$mkvlog_output_file"
 done
 # MKV Rename Function END
 
-echo "> MKVRename API Script executed successfully"
+echo "> MKVRename API Script COMPLTED"
 echo "" >> "$mkvlog_output_file"
 echo "> MKVRename API Script executed successfully" >> "$mkvlog_output_file"
 echo "=================================================================" >> "$mkvlog_output_file"
