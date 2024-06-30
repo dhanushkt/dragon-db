@@ -42,7 +42,7 @@ if [[ "$full_file_path" != *.mkv ]] || [ ! -f "$full_file_path" ]; then
 fi
 
 # URL to get the list words to remove (.txt file)
-WORDS_URL="https://app.infinitysystems.in/api/words_to_remove.txt"
+WORDS_URL="https://app.infinitysystems.in/api/mkvrn/words_to_remove.txt"
 # Local temporary file to store the downloaded content
 TMP_FILE="./TEMP_words_to_remove.txt"
 # Download the content to the temporary file
