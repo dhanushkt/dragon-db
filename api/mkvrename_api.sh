@@ -4,7 +4,7 @@
 # PHP API is implemented to trigger this script remotely on Radarr/Sonarr import and upgrade
 # Requirements: mkvinfo, mkvpropedit
 # Author: Dragon DB
-# Version: 2.3
+# Version: 2.4
 
 # Check if script is called with exactly two argument, $1 = path to .mkv file, $2 = media_title
 if [ "$#" -ne 2 ]; then
@@ -50,7 +50,7 @@ curl -s -o "$TMP_FILE" "$WORDS_URL"
 # Read the TEMP file into an array
 IFS=$'\r\n' GLOBIGNORE='*' command eval 'words_to_remove_arr=($(cat $TMP_FILE))'
 # Logging the list of words to remove (Print each element with single quotes using printf)
-printf ">[sh] List of words to remove: %s" "$(printf "'%s' " "${words_to_remove_arr[@]}\n")"
+printf ">[sh] List of words to remove: %s\n" "$(printf "'%s' " "${words_to_remove_arr[@]}")"
 echo "> List of words to remove:" >> "$mkvlog_output_file"
 printf "$(printf "'%s' " "${words_to_remove_arr[@]}")\n" >> "$mkvlog_output_file"
 
@@ -58,7 +58,8 @@ printf "$(printf "'%s' " "${words_to_remove_arr[@]}")\n" >> "$mkvlog_output_file
 # MKVRename Function START
 # Function to delete the name metadata if it contains the any words in list array "words_to_remove" from the .mkv file
 echo "=================================================================" >> "$mkvlog_output_file"
-echo ">[sh] START MKVRename Function | -----------------------------------"
+echo "================================================================="
+echo ">[sh] START MKVRename Function | --------------------------------"
 echo "> START MKVRename Function | -----------------------------------" >> "$mkvlog_output_file"
 echo "> Looping through all tracks" >> "$mkvlog_output_file"
 
@@ -110,17 +111,17 @@ mkvinfo "$full_file_path" | grep "Track number" | while read -r line; do
             
             echo ">[sh] Word '$word' removed from Track $track_number name metadata."
             echo "> Word '$word' removed from Track $track_number name metadata." >> "$mkvlog_output_file"
-            #echo "_________________________________________________________________" >> "$mkvlog_output_file"
         else
             echo ">[sh] Word '$word' not found in Track $track_number name metadata."
             echo "> Word '$word' not found in Track $track_number name metadata. Skipping." >> "$mkvlog_output_file"
-            #echo "_________________________________________________________________" >> "$mkvlog_output_file"
         fi
     done
+    echo "_________________________________________________________________"
     echo "_________________________________________________________________" >> "$mkvlog_output_file"
 done
 # MKVRename Function END
-echo ">[sh] MKVRename API Script COMPLETED | ------------------------------"
+echo ">[sh] MKVRename API Script COMPLETED | --------------------------"
+echo "================================================================="
 echo "" >> "$mkvlog_output_file"
 echo "> MKVRename API Script executed successfully" >> "$mkvlog_output_file"
 echo "=================================================================" >> "$mkvlog_output_file"

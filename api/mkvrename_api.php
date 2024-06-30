@@ -4,7 +4,7 @@ MKVRN API
 This PHP API code is designed to remotely execute the mkvrename script on a webhook call using the ssh2 extension on a remote server where the media is located. The script file (.sh) to be executed should be placed on the VM.
 Triggered by Radarr/Sonarr WebHook Connection for "Import" and "Upgrade" events.
 API by: Dragon DB
-Version: 2.3
+Version: 2.4
 */
 
 // API Flags
@@ -109,7 +109,7 @@ function extractAndSanitizeSeriesInfo($input)
 }
 
 fwrite($log_file, "====================================================== \n");
-fwrite($log_file, "> Triggered MKV Rename API at " . date('d_m_Y_H_i_s') . " [" . date('h:i:s A') . "]" . "\n");
+fwrite($log_file, "> Triggered MKV Rename API at " . date('d_m_Y_H_i_s') . " [" . date('h:i A') . "]" . "\n");
 fwrite($log_file, "====================================================== \n");
 fwrite($log_file, "> TEMP log file: ERROR_{$log_current_date}_mkvrn_api_log.txt \n");
 
