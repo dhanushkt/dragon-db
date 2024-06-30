@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script to automatically update the sync_script_file.sh script from GitHub
+# Script to automatically update the script file from GitHub URL
 
 # Check if script is called with two arguments, $1 = github_raw_url, $2 = local_file_path
 if [ "$#" -ne 2 ]; then
