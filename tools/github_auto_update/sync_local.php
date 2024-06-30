@@ -1,8 +1,9 @@
 <?php
+require '../mkvrename_creds.php';
 // URL of the raw file from GitHub
-$githubUrl = 'https://raw.githubusercontent.com/your-username/your-repo/main/mkvrename_api.php';
+$githubUrl = $creds_local_sync_url;
 // Path to the local file
-$localFilePath = __DIR__ . '/mkvrename_api.php';
+$localFilePath = __DIR__ . '/../mkvrename_api.php';
 
 echo "GitHub URL : " . $githubUrl . "\n";
 echo "Local File Path : " . $localFilePath . "\n";

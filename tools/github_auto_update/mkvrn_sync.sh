@@ -1,15 +1,20 @@
 #!/bin/bash
 # Script to automatically update the sync_script_file.sh script from GitHub
 
+# Check if script is called with two arguments, $1 = github_raw_url, $2 = local_file_path
+if [ "$#" -ne 2 ]; then
+    echo ">[sh] Invalid number of arguments provided, Usage: $0 <github_raw_url> <local_file_path>"
+    exit 1
+fi
+
 # URL of the raw file from GitHub
-GITHUB_URL="https://raw.githubusercontent.com/your-username/your-repo/main/sync_script_file.sh"
+GITHUB_URL=$1
 # Path to the local file
-LOCAL_FILE_PATH="./sync_script_file.sh"
+LOCAL_FILE_PATH=$2
 
-
-echo ">[sh] GitHub Sync Script Started | --------------------------"
+echo ">[sh] MKVRN Sync Script Started | --------------------------"
 echo ">[sh] GitHub URL: $GITHUB_URL"
-echo ">[sh] Local file path: $(realpath $LOCAL_FILE_PATH)"
+echo ">[sh] Local file path: $LOCAL_FILE_PATH"
 
 # Fetch the content from GitHub
 CONTENT=$(curl -s $GITHUB_URL)
@@ -53,4 +58,4 @@ else
     echo ">[sh] File already has execute permission."
 fi
 
-echo ">[sh] GitHub Sync Script Completed | ------------------------"
+echo ">[sh] MKVRN Sync Script Completed | ------------------------"
