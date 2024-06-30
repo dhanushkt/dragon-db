@@ -1,0 +1,34 @@
+{
+    "pipeline": {
+        "name": "DragonDB_GitHub_CI_Pipeline",
+        "version": "1.0",
+        "local_deployments": [
+            {
+                "github_raw_url": "https://raw.githubusercontent.com/dhanushkt/dragon-db/main/api/mkvrename_api.php",
+                "path_with_filename": "./mkvrename_api_ci_pipeline.php"
+            },
+            {
+                "github_raw_url": "https://raw.githubusercontent.com/dhanushkt/dragon-db/main/api/mkvrename_api.php",
+                "path_with_filename": "../mkvrename_api_ci_pipeline_2.php"
+            }
+        ],
+        "remote_deployments": [
+            {
+                "github_url": "https://raw.githubusercontent.com/dhanushkt/dragon-db/main/api/mkvrename_api.sh",
+                "path_with_filename": "/home/trinityvoid/scripts/ci_pipeline.sh",
+                "script_command": "bash /home/trinityvoid/scripts/github_ci_pipeline.sh",
+                "ssh": {
+                    "host": "remote.vm.address",
+                    "port": 22,
+                    "username": "your_ssh_username",
+                    "password": "your_ssh_password"
+                }
+            },
+            {
+                "github_url": "https://raw.githubusercontent.com/dhanushkt/dragon-db/main/api/mkvrename_api.sh",
+                "path_with_filename": "/home/trinityvoid/scripts/ci_pipeline_2.sh",
+                "script_command": "bash /home/trinityvoid/scripts/github_ci_pipeline.sh"
+            }
+        ]
+    }
+}
