@@ -40,8 +40,8 @@
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            /* white-space: pre-wrap; */
+            /* word-wrap: break-word; */
         }
 
         pre {
@@ -58,9 +58,7 @@
             border-radius: 4px;
             /* Rounded corners for aesthetics */
             overflow: auto;
-            /* Scroll if content overflows */
-            white-space: pre-wrap;
-            /* Preserve whitespace and wrap text */
+            /* Enable both vertical and horizontal scrolling */
         }
     </style>
 </head>
