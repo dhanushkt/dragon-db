@@ -4,7 +4,7 @@ MKVRN API
 This PHP API code is designed to remotely execute the mkvrename script on a webhook call using the ssh2 extension on a remote server where the media is located. The script file (.sh) to be executed should be placed on the VM.
 Triggered by Radarr/Sonarr WebHook Connection for "Import" and "Upgrade" events.
 API by: Dragon DB
-Version: 2.4
+Version: 2.5
 */
 
 // API Flags
@@ -89,7 +89,7 @@ function sanitizeString($string)
 function extractAndSanitizeSeriesInfo($input)
 {
     // Regular expression to match the pattern
-    $pattern = '/Season \d+\/([^ -]+) - (S\d+E\d+) -/';
+    $pattern = '/Season \d+\/(.+?) - (S\d+E\d+) -/';
     // Array to store the matches
     $matches = array();
     // Perform the regular expression match
@@ -104,7 +104,7 @@ function extractAndSanitizeSeriesInfo($input)
         $result = $sanitizedSeriesTitle . '_' . $sanitizedSeasonEpisode;
         return $result;
     } else {
-        return "Pattern not matched";
+        return "series_title_not_found";
     }
 }
 
