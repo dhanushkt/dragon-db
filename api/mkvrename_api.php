@@ -79,6 +79,10 @@ function sanitizeString($string)
     $string = strtolower($string);
     // Remove special characters except spaces, letters, and numbers
     $string = preg_replace('/[^a-z0-9 ]/', '', $string);
+    // Replace multiple spaces with a single space
+    $string = preg_replace('/\s+/', ' ', $string);
+    // Trim leading and trailing spaces
+    $string = trim($string);
     // Replace spaces with underscores
     $string = str_replace(' ', '_', $string);
 
