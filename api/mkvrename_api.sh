@@ -100,14 +100,17 @@ mkvinfo "$full_file_path" | grep "Track number" | while read -r line; do
                 # Send ntfy notification on track metadata changes
                 # Extract only file name
                 base_mkvfull_file_path=$(basename "$full_file_path")
-                curl -H "Tags: rotating_light,MKVRN-API" -d "[MKVRN-API] Found $word in $base_mkvfull_file_path" "ntfy.sh/dragondb_ntfy"
+                echo "> ntfy notification output" >> "$mkvlog_output_file"
+                curl -H "Tags: rotating_light,MKVRN-API" -d "[MKVRN-API] Found $word in $base_mkvfull_file_path" "ntfy.sh/dragondb_ntfy" >> "$mkvlog_output_file"
                 
                 # Set flag to false to prevent logging the mediainfo & mkvinfo
                 declare -g mkv_log=false
             fi
             
             echo "> Executing 'delete name' on Track: $track_number" >> "$mkvlog_output_file"
-            mkvpropedit "$full_file_path" --edit track:$track_number --delete name
+            echo "> mkvpropedit output start" >> "$mkvlog_output_file"
+            mkvpropedit "$full_file_path" --edit track:$track_number --delete name >> "$mkvlog_output_file"
+            echo "> mkvpropedit output end" >> "$mkvlog_output_file"
             
             echo ">[sh] Word '$word' removed from Track $track_number name metadata."
             echo "> Word '$word' removed from Track $track_number name metadata." >> "$mkvlog_output_file"
