@@ -4,7 +4,7 @@
 # PHP API is implemented to trigger this script remotely on Radarr/Sonarr import and upgrade
 # Requirements: mkvinfo, mkvpropedit
 # Author: Dragon DB
-# Version: 2.4
+# Version: 2.5
 
 # Check if script is called with exactly two argument, $1 = path to .mkv file, $2 = media_title
 if [ "$#" -ne 2 ]; then
