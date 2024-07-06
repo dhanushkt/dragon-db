@@ -19,5 +19,5 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: dragon-db/dashboard
-        server-dir: ./dragondb
+        local-dir: dragon-db/dashboard/
+        server-dir: ./dragondb/
