@@ -3,3 +3,4 @@ api/mkvrename_creds.php
 api/mkvrename_sample_api_response.txt
 dashboard/access/*
 .github/workflows/deploy_on_push.yml
+.vscode/
