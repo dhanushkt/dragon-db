@@ -1,9 +1,7 @@
 name: Deploy Dashboard
 
 on:
-  push:
-    branches:
-    - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -21,4 +19,3 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./dashboard/
         server-dir: ./dragondb/
-        dry-run: true
