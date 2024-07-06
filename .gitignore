@@ -1,3 +1,4 @@
 # Ignore specific files in the api directory
 api/mkvrename_creds.php
 api/mkvrename_sample_api_response.txt
+dashboard/access/*
