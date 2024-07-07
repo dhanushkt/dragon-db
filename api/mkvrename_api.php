@@ -178,7 +178,7 @@ elseif (isset($api_body_json['series']) && isset($api_body_json['episodeFile']))
     // log
     fwrite($log_file, "\n> Sonarr Folder Path: " . $folderPath . "\n");
     fwrite($log_file, "> Sonarr Clean Folder Path: " . $clean_folderPath . "\n");
-    fwrite($log_file, "> Sonarr elative Path: " . $relativePath . "\n");
+    fwrite($log_file, "> Sonarr Relative Path: " . $relativePath . "\n");
     fwrite($log_file, "> Sonarr Clean Relative Path: " . $clean_relativePath . "\n");
     fwrite($log_file, "> Sonarr Media Title: " . $media_title . "\n");
 }
