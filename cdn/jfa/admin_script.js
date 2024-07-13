@@ -1,6 +1,8 @@
-// Custom Scripts for JFA-GO admin.html
-// script tag included in /opt/jfa-go/data/html/admin.html
-// <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/dhanushkt/dragon-db/cdn/jfa/admin_script.js"></script>
+/* 
+* Custom Scripts for JFA-GO admin.html
+* script tag included in /opt/jfa-go/data/html/admin.html
+* <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/dhanushkt/dragon-db/cdn/jfa/admin_script.js"></script> 
+*/
 
 // Adding dynamic ID to div and updating class based on window size
 document.addEventListener('DOMContentLoaded', function() {
