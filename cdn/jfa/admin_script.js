@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run the function on initial load
     updateClass();
 
+    console.log('Custom Script Loaded');
+
     // Run the function on window resize
     window.addEventListener('resize', updateClass);
 });
