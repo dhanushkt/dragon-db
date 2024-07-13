@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var container = document.getElementById('create-inv');
     
     // Select all divs within the container
-    var divs = container.getElementsByTagName('div');
+    //var divs = container.getElementsByTagName('div');
+    // Select immediate child div elements within the container
+    var divs = container.querySelectorAll(':scope > div');
     
     // Check if there is a second div
     if (divs.length > 1) {
@@ -20,8 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateClass() {
         if (divs.length > 1) {
             if (window.innerWidth >= 768) {
+                divs[0].classList.add('w-1/2');
                 divs[1].classList.add('w-1/2');
             } else {
+                divs[0].classList.remove('w-1/2');
                 divs[1].classList.remove('w-1/2');
             }
         }
