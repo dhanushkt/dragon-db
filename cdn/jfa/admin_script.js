@@ -4,6 +4,7 @@
 * <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/dhanushkt/dragon-db/cdn/jfa/admin_script.js"></script> 
 */
 
+// Admin page Create Invite Section - fix for broken div on mobile devices
 // Adding dynamic ID to div and updating class based on window size
 document.addEventListener('DOMContentLoaded', function() {
     // Select the parent container
