@@ -24,5 +24,5 @@
 
 <!-- Stylesheets -->
 <!-- Dashmix framework -->
-<link rel="stylesheet" id="css-main" href="assets/css/dashmix.min.css">
+<link rel="stylesheet" id="css-main" href="/assets/css/dashmix.min.css">
 <!-- END Stylesheets -->
