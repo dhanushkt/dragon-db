@@ -117,11 +117,16 @@ if (isset($data['content'])) {
     preg_match($traktPattern, $links, $traktMatches);
     $traktLink = $traktMatches[1];
 
+    // Season number should be 2 digits
+    $seasonNumber = sprintf("%02d", $parsedTitle['season_number']);
+    // Construct the new Title
+    $newTitle = $parsedTitle['series_name'] . ' - S' . $seasonNumber . 'E' . $parsedTitle['episode_number'] . ' - ' . $parsedTitle['episode_title'];
+
     // Construct the new JSON structure
     $newData = [
         'embeds' => [
             [
-                'title' => $parsedTitle['full'],
+                'title' => $newTitle,
                 'url' => $traktLink,
                 'color' => 11164867,
                 'fields' => [
