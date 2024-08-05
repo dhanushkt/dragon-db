@@ -1,4 +1,11 @@
 <?php
+/*
+PHP code to receive webhook JSON from application and relay to a Discord webhook URL
+Webhook JSON will be modified to the required format before sending to Discord.
+This relay will be working for Sonarr episode notification.
+- Beta Version
+*/
+
 // Function to extract specific field values
 function extractField($fields, $name)
 {
@@ -139,13 +146,7 @@ $newData = [
     ]
 ];
 
-/*
 
-'image' => [
-                'url' => $imageUrl
-            ],
-
-*/
 // Destination Discord webhook URL
 $discordWebhookUrl = trim(file_get_contents('discord_webhook_url.txt'));
 
