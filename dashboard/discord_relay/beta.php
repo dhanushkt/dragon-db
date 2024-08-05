@@ -34,17 +34,17 @@ function parseTitle($title)
 }
 
 // Function to relay the modified JSON to the actual Discord webhook
-function relayDiscordWebhook($newData, $discordWebhookUrl)
+function relayDiscordWebhook($JsonData, $discordWebhookUrl)
 {
-    // Encode the new JSON
-    $newJson = json_encode($newData);
+    // Removed: Encode JSON
+    //$newJson = json_encode($newData);
 
     // Send the modified JSON to the actual Discord webhook
     $ch = curl_init($discordWebhookUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
     curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $newJson);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $JsonData);
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -64,91 +64,109 @@ function relayDiscordWebhook($newData, $discordWebhookUrl)
 }
 
 // Capture notification JSON from sonarr
-$inputJson = file_get_contents('php://input');
+//$inputJson = file_get_contents('php://input');
 // DEBUG: Test Input from JSON file
-//$inputJson = file_get_contents('sample_webhook.json');
+$inputJson = file_get_contents('sample_webhook.json');
 
 $data = json_decode($inputJson, true);
 
-// Extract fields from the input JSON
-$embed = $data['embeds'][0];
-$title = $embed['title'];
-$tvdb_url = $embed['url'];
-$imageUrl = $embed['image']['url'];
-$thumbnailUrl = $embed['thumbnail']['url'];
-$fields = $embed['fields'];
-$timestamp = $embed['timestamp'];
+// Handle test message from Sonarr
+if (isset($data['content'])) {
 
-// DEBUG: Print all the values from above
-echo "Title: " . $title . "\n";
-echo "URL: " . $tvdb_url . "\n";
-echo "Image URL: " . $imageUrl . "\n";
-//echo "Fields: " . json_encode($fields) . "\n";
+    $sameJson = json_encode($data);
+    // Destination Discord webhook URL
+    $discordWebhookUrl = trim(file_get_contents('discord_webhook_url.txt'));
+    // Send the JSON as is to the actual Discord webhook
+    relayDiscordWebhook($sameJson, $discordWebhookUrl);
 
-// Parse the title into season, episode, and episode title
-$parsedTitle = parseTitle($title);
-if ($parsedTitle === null) {
-    http_response_code(400); // Bad Request
-    echo "Invalid title format";
-    exit;
-}
+} elseif (isset($data['embeds']) && is_array($data['embeds'])) {
 
-// Extract required fields values
-$language = extractField($fields, 'Languages');
-$links = extractField($fields, 'Links');
+    // Extract fields from the input JSON
+    $embed = $data['embeds'][0];
+    $title = $embed['title'];
+    $tvdb_url = $embed['url'];
+    $imageUrl = $embed['image']['url'];
+    $thumbnailUrl = $embed['thumbnail']['url'];
+    $fields = $embed['fields'];
+    $timestamp = $embed['timestamp'];
 
-// DEBUG: print all the values
-echo "Language: " . $language . "\n";
-echo "Links: " . $links . "\n";
+    // DEBUG: Print all the values from above
+    echo "Title: " . $title . "\n";
+    echo "URL: " . $tvdb_url . "\n";
+    echo "Image URL: " . $imageUrl . "\n";
+    //echo "Fields: " . json_encode($fields) . "\n";
 
-// Extract the Trakt link from the links field
-$traktPattern = '/\[Trakt\]\((.*?)\)/';
-preg_match($traktPattern, $links, $traktMatches);
-$traktLink = $traktMatches[1];
+    // Parse the title into season, episode, and episode title
+    $parsedTitle = parseTitle($title);
+    if ($parsedTitle === null) {
+        http_response_code(400); // Bad Request
+        echo "Invalid title format";
+        exit;
+    }
 
-// Construct the new JSON structure
-$newData = [
-    'embeds' => [
-        [
-            'title' => $parsedTitle['full'],
-            'url' => $traktLink,
-            'color' => 11164867,
-            'fields' => [
-                [
-                    'name' => 'Episode added',
-                    'value' => 'Episode ' . $parsedTitle['episode_number'] . ' - ' . $parsedTitle['episode_title']
+    // Extract required fields values
+    $language = extractField($fields, 'Languages');
+    $links = extractField($fields, 'Links');
+
+    // DEBUG: print all the values
+    echo "Language: " . $language . "\n";
+    echo "Links: " . $links . "\n";
+
+    // Extract the Trakt link from the links field
+    $traktPattern = '/\[Trakt\]\((.*?)\)/';
+    preg_match($traktPattern, $links, $traktMatches);
+    $traktLink = $traktMatches[1];
+
+    // Construct the new JSON structure
+    $newData = [
+        'embeds' => [
+            [
+                'title' => $parsedTitle['full'],
+                'url' => $traktLink,
+                'color' => 11164867,
+                'fields' => [
+                    [
+                        'name' => 'Episode added',
+                        'value' => 'Episode ' . $parsedTitle['episode_number'] . ' - ' . $parsedTitle['episode_title']
+                    ],
+                    [
+                        'name' => 'Season',
+                        'value' => 'Season ' . $parsedTitle['season_number'],
+                        'inline' => true
+                    ],
+                    [
+                        'name' => 'Languages',
+                        'value' => $language,
+                        'inline' => true
+                    ],
+                    [
+                        'name' => 'Links',
+                        'value' => '[Trakt](' . $traktLink . ')',
+                        'inline' => true
+                    ]
                 ],
-                [
-                    'name' => 'Season',
-                    'value' => 'Season ' . $parsedTitle['season_number'],
-                    'inline' => true
+                'author' => [
+                    'name' => 'New Episode Update',
+                    'icon_url' => 'https://blog.infinitysystems.in/dragondbserver/DragonDB_Trans.png'
                 ],
-                [
-                    'name' => 'Languages',
-                    'value' => $language,
-                    'inline' => true
-                ],
-                [
-                    'name' => 'Links',
-                    'value' => '[Trakt](' . $traktLink . ')',
-                    'inline' => true
+                'timestamp' => $timestamp,
+                'thumbnail' => [
+                    'url' => $thumbnailUrl
                 ]
-            ],
-            'author' => [
-                'name' => 'New Episode Update',
-                'icon_url' => 'https://blog.infinitysystems.in/dragondbserver/DragonDB_Trans.png'
-            ],
-            'timestamp' => $timestamp,
-            'thumbnail' => [
-                'url' => $thumbnailUrl
             ]
         ]
-    ]
-];
+    ];
 
+    // Encode the new JSON
+    $newJson = json_encode($newData);
+    // Destination Discord webhook URL
+    $discordWebhookUrl = trim(file_get_contents('discord_webhook_url.txt'));
+    // Send the modified JSON to the actual Discord webhook
+    relayDiscordWebhook($newJson, $discordWebhookUrl);
 
-// Destination Discord webhook URL
-$discordWebhookUrl = trim(file_get_contents('discord_webhook_url.txt'));
-
-// Send the modified JSON to the actual Discord webhook
-relayDiscordWebhook($newData, $discordWebhookUrl);
+} else {
+    // JSON does not match either structure
+    echo "Invalid JSON structure";
+    http_response_code(400); // Bad Request
+    exit;
+}
