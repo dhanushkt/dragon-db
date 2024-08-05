@@ -17,7 +17,7 @@ function parseTitle($title)
     if (preg_match($pattern, $title, $matches)) {
         return [
             'full' => $matches[0],
-            'series_name' => $matches[1], // Series name with year
+            'series_name' => $matches[1],
             'season_number' => $matches[2],
             'episode_number' => $matches[3],
             'episode_title' => $matches[4]
@@ -26,9 +26,38 @@ function parseTitle($title)
     return null;
 }
 
+// Function to relay the modified JSON to the actual Discord webhook
+function relayDiscordWebhook($newData, $discordWebhookUrl)
+{
+    // Encode the new JSON
+    $newJson = json_encode($newData);
+
+    // Send the modified JSON to the actual Discord webhook
+    $ch = curl_init($discordWebhookUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $newJson);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    curl_close($ch);
+
+    // Check if the request was successful
+    if ($httpCode !== 204) { // Discord returns 204 No Content on success
+        http_response_code(500); // Internal Server Error
+        echo "Error sending data to Discord: HTTP $httpCode";
+        exit;
+    }
+
+    // Respond with a success message
+    http_response_code(200); // OK
+    echo "Webhook relayed successfully";
+}
+
 // Capture notification JSON from sonarr
 $inputJson = file_get_contents('php://input');
-
 // DEBUG: Test Input from JSON file
 //$inputJson = file_get_contents('sample_webhook.json');
 
@@ -117,36 +146,8 @@ $newData = [
             ],
 
 */
-
-// Encode the new JSON
-$newJson = json_encode($newData);
-
-// Send the new JSON
-//header('Content-Type: application/json');
-//echo $newJson;
-
 // Destination Discord webhook URL
 $discordWebhookUrl = trim(file_get_contents('discord_webhook_url.txt'));
 
 // Send the modified JSON to the actual Discord webhook
-$ch = curl_init($discordWebhookUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $newJson);
-
-$response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-curl_close($ch);
-
-// Check if the request was successful
-if ($httpCode !== 204) { // Discord returns 204 No Content on success
-    http_response_code(500); // Internal Server Error
-    echo "Error sending data to Discord: HTTP $httpCode";
-    exit;
-}
-
-// Respond with a success message
-http_response_code(200); // OK
-echo "Webhook relayed successfully";
+relayDiscordWebhook($newData, $discordWebhookUrl);
