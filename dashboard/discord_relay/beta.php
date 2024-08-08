@@ -64,9 +64,9 @@ function relayDiscordWebhook($JsonData, $discordWebhookUrl)
 }
 
 // Capture notification JSON from sonarr
-//$inputJson = file_get_contents('php://input');
+$inputJson = file_get_contents('php://input');
 // DEBUG: Test Input from JSON file
-$inputJson = file_get_contents('sample_webhook.json');
+// $inputJson = file_get_contents('sample_webhook.json');
 
 $data = json_decode($inputJson, true);
 
